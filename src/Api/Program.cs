@@ -5,6 +5,7 @@ using Api.Endpoints;
 using Application.Constants;
 using Application.DTOs;
 using Application.Services;
+using Application.Services.Interfaces;
 using Application.Validators;
 using FluentValidation;
 using Infrastructure.Configuration;

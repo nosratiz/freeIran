@@ -1,5 +1,7 @@
 using Application.Constants;
 using Application.DTOs;
+using Application.Mappers;
+using Application.Services.Interfaces;
 using Domain.Aggregates;
 using Domain.Errors;
 using Domain.Repositories;
@@ -111,7 +113,7 @@ public sealed partial class RegistrationService : IRegistrationService
         }
 
         // Step 3: Create the domain entity
-        var registrant = MapToRegistrant(request);
+        var registrant = request.ToRegistrant();
 
         // Step 4: Persist to repository
         var createResult = await _repository.CreateAsync(registrant, cancellationToken);
@@ -125,13 +127,7 @@ public sealed partial class RegistrationService : IRegistrationService
         LogRegistrationSuccess(createResult.Value.Id, createResult.Value.Profile.Email);
 
         // Step 5: Return success response
-        var response = new RegisterResponse(
-            createResult.Value.Id,
-            createResult.Value.Profile.Name,
-            createResult.Value.Profile.Email,
-            createResult.Value.CreatedAtUtc);
-
-        return Result.Ok(response);
+        return Result.Ok(createResult.Value.ToResponse());
     }
 
     /// <summary>
@@ -157,43 +153,4 @@ public sealed partial class RegistrationService : IRegistrationService
 
         return result;
     }
-
-    private static Registrant MapToRegistrant(RegisterRequest request)
-    {
-        return new Registrant
-        {
-            Id = Ulid.NewUlid().ToString(),
-            Profile = new RegistrantProfile(
-                request.Name.Trim(),
-                request.Email.Trim().ToLowerInvariant(),
-                request.DateOfBirth,
-                request.Country.Trim().ToUpperInvariant(),
-                request.Gender,
-                request.EducationLevel),
-            Skills = new SkillsProfile(
-                request.LanguagesSpoken
-                    .Where(l => !string.IsNullOrWhiteSpace(l))
-                    .Select(l => l.Trim())
-                    .Distinct()
-                    .ToList(),
-                request.ProfessionalSkills
-                    .Where(s => !string.IsNullOrWhiteSpace(s))
-                    .Select(s => s.Trim())
-                    .Distinct()
-                    .ToList()),
-            Contribution = new BusinessContribution(
-                request.CanRunBusiness,
-                request.CanDonate),
-            CreatedAtUtc = DateTime.UtcNow
-        };
-    }
-}
-
-/// <summary>
-/// Registration service interface for dependency injection.
-/// </summary>
-public interface IRegistrationService
-{
-    Task<Result<RegisterResponse>> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default);
-    Task<Result<Registrant>> GetByIdAsync(string id, CancellationToken cancellationToken = default);
 }

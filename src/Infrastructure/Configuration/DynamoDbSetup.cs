@@ -5,6 +5,7 @@ using Amazon.Runtime;
 using Domain.Repositories;
 using Infrastructure.Constants;
 using Infrastructure.Persistence;
+using Infrastructure.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -66,7 +67,7 @@ public static class DynamoDbSetup
             dynamoDbClient = new AmazonDynamoDBClient(clientConfig);
         }
 
-        services.AddSingleton<IAmazonDynamoDB>(dynamoDbClient);
+        services.AddSingleton(dynamoDbClient);
         services.AddSingleton<IDynamoDBContext>(_ => new DynamoDBContext(dynamoDbClient));
 
         // Register repository

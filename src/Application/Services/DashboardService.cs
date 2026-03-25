@@ -1,5 +1,6 @@
 using Application.Constants;
 using Application.DTOs;
+using Application.Services.Interfaces;
 using Domain.Aggregates;
 using Domain.Repositories;
 using FluentResults;
@@ -114,12 +115,4 @@ public sealed partial class DashboardService : IDashboardService
 
         return Result.Ok(response);
     }
-}
-
-/// <summary>
-/// Dashboard service interface for dependency injection.
-/// </summary>
-public interface IDashboardService
-{
-    Task<Result<DashboardStatsResponse>> GetStatsAsync(CancellationToken cancellationToken = default);
 }

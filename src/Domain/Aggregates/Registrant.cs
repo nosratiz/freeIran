@@ -1,31 +1,8 @@
 using Domain.Constants;
+using Domain.Enums;
+using Domain.ValueObjects;
 
 namespace Domain.Aggregates;
-
-/// <summary>
-/// Value object representing the registrant's basic profile information.
-/// </summary>
-public sealed record RegistrantProfile(
-    string Name,
-    string Email,
-    DateOnly DateOfBirth,
-    string Country,
-    Gender Gender,
-    EducationLevel EducationLevel);
-
-/// <summary>
-/// Value object representing the registrant's skills and languages.
-/// </summary>
-public sealed record SkillsProfile(
-    IReadOnlyList<string> LanguagesSpoken,
-    IReadOnlyList<string> ProfessionalSkills);
-
-/// <summary>
-/// Value object representing the registrant's business contribution preferences.
-/// </summary>
-public sealed record BusinessContribution(
-    bool CanRunBusiness,
-    bool CanDonate);
 
 /// <summary>
 /// Aggregate root representing a portal registrant.
@@ -62,35 +39,4 @@ public sealed record Registrant
             _ => AgeGroup.Age65Plus
         };
     }
-}
-
-public enum Gender
-{
-    Male,
-    Female,
-    NonBinary,
-    PreferNotToSay
-}
-
-public enum EducationLevel
-{
-    NoFormalEducation,
-    PrimarySchool,
-    HighSchool,
-    VocationalTraining,
-    Bachelors,
-    Masters,
-    Doctorate,
-    Other
-}
-
-public enum AgeGroup
-{
-    Under18,
-    Age18To24,
-    Age25To34,
-    Age35To44,
-    Age45To54,
-    Age55To64,
-    Age65Plus
 }

@@ -1,4 +1,4 @@
-using Domain.Aggregates;
+using Domain.Enums;
 
 namespace Application.Constants;
 

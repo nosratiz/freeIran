@@ -6,6 +6,8 @@ using Domain.Errors;
 using Domain.Repositories;
 using FluentResults;
 using Infrastructure.Constants;
+using Infrastructure.Mappers;
+using Infrastructure.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -85,7 +87,7 @@ public sealed partial class DynamoDbRegistrantRepository : IRegistrantRepository
     {
         try
         {
-            var entity = RegistrantEntity.FromDomain(registrant);
+            var entity = registrant.ToEntity();
             
             await _context.SaveAsync(entity, new DynamoDBOperationConfig
             {
@@ -228,16 +230,4 @@ public sealed partial class DynamoDbRegistrantRepository : IRegistrantRepository
                     .WithMetadata("Code", DomainErrors.Repository.OperationFailed));
         }
     }
-}
-
-/// <summary>
-/// DynamoDB configuration settings.
-/// </summary>
-public sealed class DynamoDbSettings
-{
-    public const string SectionName = DynamoDbConstants.ConfigurationSections.DynamoDb;
-    
-    public required string TableName { get; init; }
-    public required string ServiceUrl { get; init; }
-    public required string Region { get; init; }
 }

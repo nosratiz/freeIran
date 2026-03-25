@@ -1,5 +1,8 @@
 using Domain.Aggregates;
+using Domain.Enums;
+using Domain.ValueObjects;
 using FluentAssertions;
+using Infrastructure.Mappers;
 using Infrastructure.Persistence;
 
 namespace UnitTests.Infrastructure;
@@ -59,7 +62,7 @@ public class RegistrantEntityTests
         var registrant = CreateDomainRegistrant();
 
         // Act
-        var entity = RegistrantEntity.FromDomain(registrant);
+        var entity = registrant.ToEntity();
 
         // Assert
         entity.Id.Should().Be(registrant.Id);
@@ -72,7 +75,7 @@ public class RegistrantEntityTests
         var registrant = CreateDomainRegistrant();
 
         // Act
-        var entity = RegistrantEntity.FromDomain(registrant);
+        var entity = registrant.ToEntity();
 
         // Assert
         entity.Name.Should().Be(registrant.Profile.Name);
@@ -89,7 +92,7 @@ public class RegistrantEntityTests
         var registrant = CreateDomainRegistrant();
 
         // Act
-        var entity = RegistrantEntity.FromDomain(registrant);
+        var entity = registrant.ToEntity();
 
         // Assert
         entity.DateOfBirth.Should().Be("1990-05-15");
@@ -102,7 +105,7 @@ public class RegistrantEntityTests
         var registrant = CreateDomainRegistrant();
 
         // Act
-        var entity = RegistrantEntity.FromDomain(registrant);
+        var entity = registrant.ToEntity();
 
         // Assert
         entity.LanguagesSpoken.Should().BeEquivalentTo(registrant.Skills.LanguagesSpoken);
@@ -116,7 +119,7 @@ public class RegistrantEntityTests
         var registrant = CreateDomainRegistrant();
 
         // Act
-        var entity = RegistrantEntity.FromDomain(registrant);
+        var entity = registrant.ToEntity();
 
         // Assert
         entity.CanRunBusiness.Should().Be(registrant.Contribution.CanRunBusiness);
@@ -130,7 +133,7 @@ public class RegistrantEntityTests
         var registrant = CreateDomainRegistrant();
 
         // Act
-        var entity = RegistrantEntity.FromDomain(registrant);
+        var entity = registrant.ToEntity();
 
         // Assert
         entity.CreatedAtUtc.Should().Contain("2024-01-15");
@@ -144,7 +147,7 @@ public class RegistrantEntityTests
         var registrant = CreateDomainRegistrant();
 
         // Act
-        var entity = RegistrantEntity.FromDomain(registrant);
+        var entity = registrant.ToEntity();
 
         // Assert
         entity.UpdatedAtUtc.Should().NotBeNullOrEmpty();
@@ -158,7 +161,7 @@ public class RegistrantEntityTests
         var registrant = CreateDomainRegistrant() with { UpdatedAtUtc = null };
 
         // Act
-        var entity = RegistrantEntity.FromDomain(registrant);
+        var entity = registrant.ToEntity();
 
         // Assert
         entity.UpdatedAtUtc.Should().BeNull();
@@ -174,7 +177,7 @@ public class RegistrantEntityTests
         };
 
         // Act
-        var entity = RegistrantEntity.FromDomain(registrant);
+        var entity = registrant.ToEntity();
 
         // Assert
         entity.LanguagesSpoken.Should().BeEmpty();
@@ -195,7 +198,7 @@ public class RegistrantEntityTests
         };
 
         // Act
-        var entity = RegistrantEntity.FromDomain(registrant);
+        var entity = registrant.ToEntity();
 
         // Assert
         entity.Gender.Should().Be(gender.ToString());
@@ -216,7 +219,7 @@ public class RegistrantEntityTests
         };
 
         // Act
-        var entity = RegistrantEntity.FromDomain(registrant);
+        var entity = registrant.ToEntity();
 
         // Assert
         entity.EducationLevel.Should().Be(education.ToString());
@@ -363,7 +366,7 @@ public class RegistrantEntityTests
         var original = CreateDomainRegistrant();
 
         // Act
-        var entity = RegistrantEntity.FromDomain(original);
+        var entity = original.ToEntity();
         var restored = entity.ToDomain();
 
         // Assert
@@ -387,7 +390,7 @@ public class RegistrantEntityTests
         var original = CreateDomainRegistrant();
 
         // Act
-        var entity = RegistrantEntity.FromDomain(original);
+        var entity = original.ToEntity();
         var restored = entity.ToDomain();
 
         // Assert
@@ -412,7 +415,7 @@ public class RegistrantEntityTests
         };
 
         // Act
-        var entity = RegistrantEntity.FromDomain(original);
+        var entity = original.ToEntity();
         var restored = entity.ToDomain();
 
         // Assert

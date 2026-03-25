@@ -1,6 +1,6 @@
 using Api.Constants;
 using Application.DTOs;
-using Application.Services;
+using Application.Services.Interfaces;
 
 namespace Api.Endpoints;
 

@@ -2,6 +2,7 @@ using Application.Constants;
 using Application.DTOs;
 using Application.Validators;
 using Domain.Aggregates;
+using Domain.Enums;
 using FluentAssertions;
 using FluentValidation.TestHelper;
 
